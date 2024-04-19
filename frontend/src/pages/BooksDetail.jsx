@@ -29,7 +29,8 @@ export default function BookDetails() {
     const fetchBook = async () => {
       try {
         const response = await getBookDetailById(id);
-        setBook(response.book);
+        console.log("GET A BOOK", response);
+        setBook(response);
         setLoading(false);
       } catch (e) {
         console.log(e);
@@ -37,6 +38,8 @@ export default function BookDetails() {
     };
     fetchBook();
   }, [id]);
+
+  console.log("GET A BOOK", book);
 
   const handleDeleteBook = async () => {
     try {

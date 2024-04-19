@@ -34,8 +34,10 @@ async function createBook(formData) {
 
 // Function for get all books endpoint
 async function getAllBooks() {
+  console.log("FETCH GET ALL BOOKS");
   try {
     const response = await instance.get('/books');
+    console.log("RESULT FETCH GET ALL BOOKS", response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || 'Something went wrong');
@@ -63,8 +65,10 @@ async function deleteBook(id) {
 }
 
 async function getBookDetailById(id) {
+  console.log("FETCH A BOOK");
   try {
     const response = await instance.get(`/books/${id}`);
+    console.log("RESULT FETCH A BOOK", response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || 'Something went wrong');

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const { PrismaClient } = require('@prisma/client');
 const multer = require('multer');
 const prisma = new PrismaClient();
-
 const authenticateToken = require('../middlewares/authenticateToken');
 
 // Multer configuration
@@ -50,6 +50,7 @@ router.post('/', authenticateToken, upload.single('image'), async (req, res) => 
 router.get('/', authenticateToken, async (req, res) => {
     const books = await prisma.book.findMany();
     res.json(books);
+    console.log(books);
 });
 
 // Read book by id
@@ -104,5 +105,29 @@ router.delete('/:id', authenticateToken, async (req, res) => {
         res.status(400).json({ message: "Book not found" });
     }
 });
+
+// Get book image by id
+router.get('/image/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    console.log("AUTHENTICATED id ", id);
+    try {
+        const book = await prisma.book.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+            select: {
+                image: true
+            }
+        });
+        if (!book) {
+            return res.status(404).json({ message: "Book not found" });
+        }
+        console.log("IMAGE FOUND", book);
+        res.sendFile(book.image);
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
 
 module.exports = router;

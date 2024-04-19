@@ -17,7 +17,7 @@ export default function Homepage() {
 
   return (
     <VStack w="100vw">
-      {books?.books?.map((book) => (
+      {books?.map((book) => (
         <Books key={`${book.id} ${book.title}`} {...book} />
       ))}
     </VStack>
