@@ -10,13 +10,7 @@ const app = express();
 
 
 function authenticateTokenMiddleware(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) return res.sendStatus(401);
-
-  const user = jwt.verify(token, process.env.JWT_SECRET);
-  req.userId = user.userId;
-  next();
+  // TODO : get the token from the request headers
 }
 
 
@@ -29,149 +23,41 @@ app.use(cors({
 }));
 
 
-app.use('/uploads', express.static('uploads'));
-
-// Set up multer middleware to handle file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads/');
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(' ').join('-');
-    cb(null, Date.now() + '-' + fileName);
-  }
-});
-
-const upload = multer({
-  storage: storage, limits: { fileSize: 10000000 } // 10MB limit
-});
-
+// TODO : implement the upload file
 
 app.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  try {
-    const { password: passwordDB, ...user } = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    });
-    res.json({ user });
-  }
-  catch (err) {
-    res.status(400).json({ message: "User already exists" });
-  }
+  // TODO : implement the register endpoint
 });
 
 app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-    res.json({ token });
-
-  }
-  catch (err) {
-    console.log(err);
-    res.status(400).json({ message: "Invalid credentials" });
-  }
-
+  // TODO : implement the login endpoint
 });
 
 // create a book 
 app.post("/books", authenticateTokenMiddleware, upload.single('image'), async (req, res) => {
-  const { title, author, publisher, year, pages } = req.body;
-  try {
-    const book = await prisma.book.create({
-      data: {
-        title,
-        author,
-        publisher,
-        year: parseInt(year),
-        pages: parseInt(pages),
-        image: req.file.path // add the path to the uploaded image to the book data
-      },
-    });
-    res.json({ book });
-  }
-  catch (err) {
-    console.log("err", err);
-    res.status(400).json({ message: "Book already exists" });
-  }
-
+  // TODO : implement the create book endpoint
 });
 
 
 // get all books
 app.get("/books", async (req, res) => {
-  const books = await prisma.book.findMany();
-  res.json({ books });
-}
-);
+  // TODO : implement the get all books endpoint
+});
 
 // edit a book
 app.put("/books/:id", authenticateTokenMiddleware, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, author, publisher, year, pages } = req.body;
-    const book = await prisma.book.update({
-      where: { id: Number(id) },
-      data: {
-        title,
-        author,
-        publisher,
-        year,
-        pages,
-      },
-    });
-    res.json({ book });
-  }
-  catch (err) {
-    console.log(err);
-    res.status(400).json({ message: "Something went wrong" });
-  }
-
-
+  // TODO : implement the edit book endpoint
 });
 
 
 // delete a book
 app.delete("/books/:id", authenticateTokenMiddleware, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const book = await prisma.book.delete({
-      where: { id: Number(id) },
-    });
-    res.json({ book });
-  }
-  catch (e) {
-    console.log(e);
-    res.status(400).json({ message: "Something went wrong" });
-  }
+  // TODO : implement the delete book endpoint
 });
 
 // get book by id 
 app.get("/books/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const book = await prisma.book.findUnique({
-      where: { id: Number(id) },
-    });
-    res.json({ book });
-  }
-  catch (e) {
-    console.log(e);
-    res.status(400).json({ message: "Something went wrong" });
-  }
+  // TODO : implement the get book by id endpoint
 });
 
 
