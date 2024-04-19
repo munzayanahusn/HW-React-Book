@@ -12,7 +12,7 @@ export default function EditBookPage() {
     const fetchBook = async () => {
       try {
         const response = await getBookDetailById(id);
-        setBook(response.book);
+        setBook(response);
       } catch (e) {
         console.log(e);
       }
