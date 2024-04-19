@@ -13,13 +13,11 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 
-app.use('/auth', authRoutes);
-app.use('/book', bookRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use('/books', bookRoutes);
+app.use('/', authRoutes);
 
 // Start the server
 app.listen(8000, () => {
   console.log('Server started on port 8000');
 });
-
-

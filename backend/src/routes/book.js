@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { PrinsmaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { PrismaClient } = require('@prisma/client');
 const multer = require('multer');
+const prisma = new PrismaClient();
 
 const authenticateToken = require('../middlewares/authenticateToken');
 
@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
         cb(null, './uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, Date.now() + '-' + fileName);
     }
 });
 
@@ -24,10 +25,11 @@ const upload = multer({
 });
 
 // Create a book
-router.post('/', authenticateToken, upload.single('cover'), async (req, res) => {
-    const { title, author, pages } = req.body;
-    const { filePath } = req.file.path;
+router.post('/', authenticateToken, upload.single('image'), async (req, res) => {
+    const { title, author, publisher, year, pages } = req.body;
     try {
+        const filePath = req.file.path;
+
         const book = await prisma.book.create({
             data: {
                 title,
@@ -38,9 +40,9 @@ router.post('/', authenticateToken, upload.single('cover'), async (req, res) => 
                 image: filePath
             }
         });
-        res.json(book);
+        res.json({ book });
     } catch (error) {
-        res.status(400).json({ message: "Book already exist"});
+        res.status(400).json({ message: "Book already exist" });
     }
 });
 
@@ -102,3 +104,5 @@ router.delete('/:id', authenticateToken, async (req, res) => {
         res.status(400).json({ message: "Book not found" });
     }
 });
+
+module.exports = router;
