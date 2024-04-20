@@ -34,27 +34,32 @@ export default function BookDetails() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       {isLoading ? (
         <div className="bg-gray-200 h-72 my-6 animate-pulse"></div>
       ) : (
-        <div className="my-6 flex">
-          <div className="w-1/3">
+        <div className="my-6 flex flex-col items-center">
+          <div className="mt-5">
+            <h1 className="text-4xl font-bold text-slate-500 mb-10">Detail Book</h1>
+          </div>
+          <div className="w-full">
             <img
               src={`http://localhost:8000/${book.image}`}
               alt={book.title}
+              style={{ width: '500px', height: '300px' }} 
             />
           </div>
-          <div className="ml-8">
-            <h1 className="text-2xl font-bold">{book.title}</h1>
-            <p className="text-xl font-semibold text-gray-500">{book.author}</p>
-            <p className="text-xl font-semibold text-gray-500">{book.publisher}</p>
-            <p className="text-xl font-semibold text-gray-500 mb-4">{book.year} | {book.pages} pages</p>
+          <div className="mt-5">
+            <h1 className="text-2xl font-bold text-slate-800 mb-5">{book.title}</h1>
+            <p className="text-xl font-semibold text-gray-500">Author : {book.author}</p>
+            <p className="text-xl font-semibold text-gray-500">Publisher : {book.publisher}</p>
+            <p className="text-xl font-semibold text-gray-500">Year : {book.year}</p>
+            <p className="text-xl font-semibold text-gray-500 mb-4">Number of Pages : {book.pages} pages</p>
           </div>
         </div>
       )}
       {localStorage.getItem('token') && (localStorage.getItem('isLogIn') == "true") && (
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 mt-4">
           <div className="relative">
             <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onClick={handleDeleteBook}>Delete</button>
             <div className="absolute -right-20 top-10 w-48 bg-white border border-gray-200 p-4 rounded shadow-md hidden">
