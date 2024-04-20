@@ -56,3 +56,6 @@ Fitur utama dari situs web ini meliputi:
     ```
     yang menandakan frontend website sudah berjalan.
 7. Buka website malalui `http://localhost:5173/`
+
+## Tampilan Halaman Beranda Website
+![Screenshot HomePage Online Library Website](./docs/screenshot-homepage.png)
