@@ -27,7 +27,7 @@ export default function Homepage() {
 
   return (
     <div className="flex flex-col items-center w-full" style={{ fontFamily: 'Inter, sans-serif' }}>
-      <div className="text-md text-center text-slate-700 font-bold mt-10">
+      <div className="text-md text-center text-slate-700 font-bold mt-10 mb-5">
         <h1>Welcome to the Online Library</h1>
       </div>
       {!isLoggedIn && (
