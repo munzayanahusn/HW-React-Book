@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import BookDetails from "./pages/BooksDetail";
@@ -6,10 +6,11 @@ import EditBookPage from "./pages/Editbook";
 import Homepage from "./pages/Homepage";
 import NewBookPage from "./pages/NewBooks";
 import Register from "./pages/Register";
+import "./App.css";
 
 function App() {
   return (
-    <VStack minH="100vh" minW="100vw">
+    <div className="min-h-screen min-w-full">
       <Router>
         <Navbar />
         <Routes>
@@ -20,7 +21,7 @@ function App() {
           <Route path={"/editbook/:id"} element={<EditBookPage />} />
         </Routes>
       </Router>
-    </VStack>
+    </div>
   );
 }
 

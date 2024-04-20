@@ -18,15 +18,16 @@ export default function ImageUploader() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <input
         type="file"
         accept="image/*"
         required
         ref={fileInputRef}
         onChange={handleImageUpload}
+        className="mb-4"
       />
-      {selectedImage && <img src={selectedImage} alt="Selected Image" />}
+      {selectedImage && <img src={selectedImage} alt="Selected Image" className="w-full" />}
     </div>
   );
 }

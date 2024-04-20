@@ -1,29 +1,14 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Image,
-  Input,
-  useToast,
-  VStack,
-} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { createBook, editBook } from "../modules/fetch";
 
 export default function BookForm({ bookData }) {
-  const toast = useToast();
   const [selectedImage, setSelectedImage] = useState(null);
 
   async function handleSubmit(event) {
     event.preventDefault();
     if (!selectedImage) {
-      toast({
-        title: "Error",
-        description: "Please select image",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      alert("Please select an image");
+      return;
     }
     const formData = new FormData(event.target);
     if (bookData) {
@@ -36,43 +21,19 @@ export default function BookForm({ bookData }) {
           parseInt(formData.get("year")),
           parseInt(formData.get("pages"))
         );
-        toast({
-          title: "Success",
-          description: "Book edited successfully",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
+        alert("Book updated successfully");
       } catch (error) {
-        toast({
-          title: "Error",
-          description: error.response.data.message || "Something went wrong",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
+        alert(error.response.data.message || "Something went wrong");
       }
       return;
     }
     try {
       await createBook(formData);
       event.target.reset();
-      toast({
-        title: "Success",
-        description: "Book created successfully",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      alert("Book created successfully");
       setSelectedImage("");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.response.data.message || "Something went wrong",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      alert(error.response.data.message || "Something went wrong");
     }
   }
 
@@ -83,45 +44,66 @@ export default function BookForm({ bookData }) {
   }, [bookData]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <VStack spacing={4}>
-        <FormControl>
-          <FormLabel>Title</FormLabel>
-          <Input name="title" required defaultValue={bookData?.title} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Author</FormLabel>
-          <Input name="author" required defaultValue={bookData?.author} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Publisher</FormLabel>
-          <Input name="publisher" required defaultValue={bookData?.publisher} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Year</FormLabel>
-          <Input
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-4">
+        <label>
+          Title
+          <input
+            name="title"
+            required
+            defaultValue={bookData?.title}
+            className="border border-gray-300 p-2 rounded"
+          />
+        </label>
+        <label>
+          Author
+          <input
+            name="author"
+            required
+            defaultValue={bookData?.author}
+            className="border border-gray-300 p-2 rounded"
+          />
+        </label>
+        <label>
+          Publisher
+          <input
+            name="publisher"
+            required
+            defaultValue={bookData?.publisher}
+            className="border border-gray-300 p-2 rounded"
+          />
+        </label>
+        <label>
+          Year
+          <input
             name="year"
             type="number"
             required
             defaultValue={bookData?.year}
+            className="border border-gray-300 p-2 rounded"
           />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Pages</FormLabel>
-          <Input
+        </label>
+        <label>
+          Pages
+          <input
             name="pages"
             type="number"
             required
             defaultValue={bookData?.pages}
+            className="border border-gray-300 p-2 rounded"
           />
-        </FormControl>
+        </label>
         {selectedImage && (
-          <Image w={64} src={selectedImage} alt="Selected Image" />
+          <img
+            src={selectedImage}
+            alt="Selected Image"
+            className="w-64 object-cover rounded"
+          />
         )}
         {!bookData?.image && (
-          <FormControl>
-            <FormLabel>Image</FormLabel>
-            <Input
+          <label>
+            Image
+            <input
               name="image"
               type="file"
               accept="image/*"
@@ -129,12 +111,17 @@ export default function BookForm({ bookData }) {
                 const file = e.target.files[0];
                 setSelectedImage(URL.createObjectURL(file));
               }}
+              className="border border-gray-300 p-2 rounded"
             />
-          </FormControl>
+          </label>
         )}
-
-        <Button type="submit">{bookData ? "Edit Book" : "Create Book"}</Button>
-      </VStack>
+      </div>
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        {bookData ? "Edit Book" : "Create Book"}
+      </button>
     </form>
   );
 }

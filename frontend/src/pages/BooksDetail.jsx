@@ -1,20 +1,3 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Skeleton,
-  Text,
-} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteBook, getBookDetailById } from "../modules/fetch";
@@ -51,56 +34,40 @@ export default function BookDetails() {
   };
 
   return (
-    <Box>
+    <div>
       {isLoading ? (
-        <Skeleton height="300px" my="6" />
+        <div className="bg-gray-200 h-72 my-6 animate-pulse"></div>
       ) : (
-        <Flex my="6">
-          <Box w="300px">
-            <Image
+        <div className="my-6 flex">
+          <div className="w-1/3">
+            <img
               src={`http://localhost:8000/${book.image}`}
               alt={book.title}
             />
-          </Box>
-          <Box ml="8">
-            <Heading as="h1" size="lg">
-              {book.title}
-            </Heading>
-            <Text fontSize="xl" fontWeight="semibold" color="gray.500">
-              {book.author}
-            </Text>
-            <Text fontSize="xl" fontWeight="semibold" color="gray.500">
-              {book.publisher}
-            </Text>
-            <Text fontSize="xl" fontWeight="semibold" color="gray.500" mb="4">
-              {book.year} | {book.pages} pages
-            </Text>
-          </Box>
-        </Flex>
+          </div>
+          <div className="ml-8">
+            <h1 className="text-2xl font-bold">{book.title}</h1>
+            <p className="text-xl font-semibold text-gray-500">{book.author}</p>
+            <p className="text-xl font-semibold text-gray-500">{book.publisher}</p>
+            <p className="text-xl font-semibold text-gray-500 mb-4">{book.year} | {book.pages} pages</p>
+          </div>
+        </div>
       )}
-      {localStorage.getItem('token') && (
-        <HStack>
-          <Popover>
-            <PopoverTrigger>
-              <Button colorScheme="red">Delete</Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader>Confirmation!</PopoverHeader>
-              <PopoverBody>
-                Are you sure you want to delete this book?
-              </PopoverBody>
-              <Button onClick={handleDeleteBook} colorScheme="red">
-                Delete
-              </Button>
-            </PopoverContent>
-          </Popover>
+      {localStorage.getItem('token') && (localStorage.getItem('isLogIn') == "true") && (
+        <div className="flex space-x-4">
+          <div className="relative">
+            <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onClick={handleDeleteBook}>Delete</button>
+            <div className="absolute -right-20 top-10 w-48 bg-white border border-gray-200 p-4 rounded shadow-md hidden">
+              <p className="font-semibold">Confirmation!</p>
+              <p>Are you sure you want to delete this book?</p>
+              <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded mt-2" onClick={handleDeleteBook}>Delete</button>
+            </div>
+          </div>
           <Link to={`/editbook/${id}`}>
-            <Button>Edit</Button>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Edit</button>
           </Link>
-        </HStack>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }

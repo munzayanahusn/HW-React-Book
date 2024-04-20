@@ -1,23 +1,23 @@
-import { Card, Heading, Image, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-
 
 export default function Books({ id, title, author, image, publisher, year }) {
   return (
-    <Link to={`/books/${id}`}>
-    <Card key={id} my={4} p={4} cursor='pointer'>
-      <VStack>
-        <Heading size={"md"}>
+    <Link to={`/books/${id}`} className="block my-4 p-4 cursor-pointer">
+      <div className="space-y-2">
+        <h2 className="text-lg font-medium">
           {title} ({year})
-        </Heading>
-        <Text>{author}</Text>
-        <Image w={24} h={24} src={`http://localhost:8000/${image}`} />
-        <Text>
-          <span>Publisher: </span>
+        </h2>
+        <p>{author}</p>
+        <img
+          src={`http://localhost:8000/${image}`}
+          alt={title}
+          className="w-24 h-24 object-cover"
+        />
+        <p>
+          <span className="font-medium">Publisher: </span>
           {publisher}
-        </Text>
-      </VStack>
-    </Card>
+        </p>
+      </div>
     </Link>
   );
 }
