@@ -48,9 +48,11 @@ export default function Homepage() {
         </div>
       )}
 
-      {isLoggedIn && (books.length > 0) && books.map((book) => (
-        <Books key={`${book.id} ${book.title}`} {...book} />
-      ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 l:grid-cols-4 gap-4">
+        {isLoggedIn && books.length > 0 && books.map((book) => (
+          <Books key={`${book.id} ${book.title}`} {...book} />
+        ))}
+      </div>
     </div>
   );
 }
