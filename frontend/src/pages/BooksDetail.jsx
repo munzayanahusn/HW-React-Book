@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteBook, getBookDetailById } from "../modules/fetch";
 
 export default function BookDetails() {
   const [book, setBook] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -25,12 +26,20 @@ export default function BookDetails() {
   console.log("GET A BOOK", book);
 
   const handleDeleteBook = async () => {
+    setShowConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
     try {
       await deleteBook(id);
       navigate("/");
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmation(false); 
   };
 
   return (
@@ -40,7 +49,7 @@ export default function BookDetails() {
       ) : (
         <div className="my-6 flex flex-col items-center">
           <div className="mt-5">
-            <h1 className="text-4xl font-bold text-slate-500 mb-10">Detail Book</h1>
+            <h1 className="text-4xl font-bold text-slate-500 mb-10">Book's Detail</h1>
           </div>
           <div className="w-full">
             <img
@@ -62,11 +71,18 @@ export default function BookDetails() {
         <div className="flex space-x-4 mt-4">
           <div className="relative">
             <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onClick={handleDeleteBook}>Delete</button>
-            <div className="absolute -right-20 top-10 w-48 bg-white border border-gray-200 p-4 rounded shadow-md hidden">
-              <p className="font-semibold">Confirmation!</p>
-              <p>Are you sure you want to delete this book?</p>
-              <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded mt-2" onClick={handleDeleteBook}>Delete</button>
-            </div>
+            {showConfirmation && (
+              <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
+                <div className="bg-white p-8 rounded-lg shadow-lg">
+                  <h2 className="text-3xl text-black font-bold mb-4">Delete Book</h2>
+                  <p className="text-lg text-gray-800 mb-8">Are you sure you want to delete this book?</p>
+                  <div className="flex justify-center">
+                    <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded mr-2" onClick={confirmDelete}>Delete</button>
+                    <button className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded" onClick={cancelDelete}>Cancel</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <Link to={`/editbook/${id}`}>
             <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Edit</button>
