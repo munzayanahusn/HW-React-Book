@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function BookForm({ bookData }) {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [submitting, setSubmitting] = useState(false); // State untuk menandai apakah submit dilakukan
   const navigate = useNavigate();
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setSubmitting(true); // Set submit ke true saat submit dilakukan
     const formData = new FormData(event.target);
     if (bookData) {
       try {
@@ -19,6 +21,7 @@ export default function BookForm({ bookData }) {
           parseInt(formData.get("year")),
           parseInt(formData.get("pages"))
         );
+        navigate(`/books/${bookData.id}`);
         alert("Book updated successfully");
       } catch (error) {
         alert(error.response.data.message || "Something went wrong");
@@ -27,13 +30,14 @@ export default function BookForm({ bookData }) {
       try {
         await createBook(formData);
         event.target.reset();
+        navigate(`/`);
         alert("Book created successfully");
         setSelectedImage("");
       } catch (error) {
         alert(error.response.data.message || "Something went wrong");
       }
     }
-    navigate(`/books/${bookData.id}`);
+    setSubmitting(false); // Set submit kembali ke false setelah selesai submit
   }
 
   useEffect(() => {
@@ -43,8 +47,13 @@ export default function BookForm({ bookData }) {
   }, [bookData]);
 
   const handleCancel = () => {
-    navigate(`/books/${bookData.id}`);
+    if (bookData) {
+      navigate(`/books/${bookData.id}`);
+    } else {
+      navigate(`/`);
+    }
   };
+
   return (
     <div className="w-full py-4 px-24 mx-auto mt-8">
       <h1 className="text-3xl text-slate-900 font-bold mb-4">{bookData ? "Edit Book" : "Create New Book"}</h1>
@@ -61,7 +70,7 @@ export default function BookForm({ bookData }) {
                 id="title"
                 name="title"
                 placeholder="Enter book title"
-                required
+                required={submitting} 
                 defaultValue={bookData?.title}
                 className="bg-white border border-gray-300 rounded p-2 w-full"
                 style={{ color: 'black' }}
@@ -77,7 +86,7 @@ export default function BookForm({ bookData }) {
                 id="author"
                 name="author"
                 placeholder="Enter book author"
-                required
+                required={submitting} 
                 defaultValue={bookData?.author}
                 className="bg-white border border-gray-300 rounded p-2 w-full"
                 style={{ color: 'black' }}
@@ -93,7 +102,7 @@ export default function BookForm({ bookData }) {
                 id="publisher"
                 name="publisher"
                 placeholder="Enter book publisher"
-                required
+                required={submitting} 
                 defaultValue={bookData?.publisher}
                 className="bg-white border border-gray-300 rounded p-2 w-full"
                 style={{ color: 'black' }}
@@ -109,7 +118,7 @@ export default function BookForm({ bookData }) {
                 id="year"
                 name="year"
                 placeholder="Enter book year publication"
-                required
+                required={submitting} 
                 defaultValue={bookData?.year}
                 className="bg-white border border-gray-300 rounded p-2 w-full"
                 style={{ color: 'black' }}
@@ -125,7 +134,7 @@ export default function BookForm({ bookData }) {
                 id="pages"
                 name="pages"
                 placeholder="Enter book number of pages"
-                required
+                required={submitting} 
                 defaultValue={bookData?.pages}
                 className="bg-white border border-gray-300 rounded p-2 w-full"
                 style={{ color: 'black' }}
@@ -147,7 +156,7 @@ export default function BookForm({ bookData }) {
                 }}
                 className="border border-gray-300 p-2 rounded"
               />
-            </div> 
+            </div>
           )}
           {selectedImage && (
             <img
