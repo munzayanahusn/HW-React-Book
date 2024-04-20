@@ -67,6 +67,11 @@ export default function BookDetails() {
           </div>
         </div>
       )}
+      {(!localStorage.getItem('token') || (localStorage.getItem('isLogIn') == "false")) && (
+        <div className="text-center text-amber-700 mt-10">
+          <p>You need to log in to edit or delete the book.</p>
+        </div>
+      )}
       {localStorage.getItem('token') && (localStorage.getItem('isLogIn') == "true") && (
         <div className="flex space-x-4 mt-4">
           <div className="relative">

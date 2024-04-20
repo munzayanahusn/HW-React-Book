@@ -31,19 +31,19 @@ export default function Homepage() {
         <h1>Welcome to the Online Library</h1>
       </div>
       {!isLoggedIn && (
-        <div className="text-center text-black mt-10">
+        <div className="text-center text-amber-700 mb-5">
           <p>Please Login or Register First to Start Reading</p>
         </div>
       )}
 
       {isLoggedIn && isLogOut && (
-        <div className="text-center text-black mt-10">
-          <p>You have been logged out. Please Login Again to Add or Edit Books</p>
+        <div className="text-center text-amber-700 mb-5">
+          <p>You have been logged out. Please Login Again to Add or Edit Book</p>
         </div>
       )}
 
       {isLoggedIn && (books.length === 0) && (
-        <div className="text-center text-black mt-10">
+        <div className="text-center text-slate-500 text-bold mb-5">
           <p>No books available</p>
         </div>
       )}

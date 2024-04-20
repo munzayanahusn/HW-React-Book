@@ -17,7 +17,7 @@ const Register = () => {
     }
     try {
       await registerUser(name, email, password);
-      alert("You have successfully registered.");
+      alert("You have successfully registered. Please Login To Continue");
       navigate("/");
     } catch (e) {
       setError(e.message || "An error occurred. Please try again.");
@@ -44,10 +44,11 @@ const Register = () => {
             id="name"
             name="name"
             placeholder="Enter your name"
-            className="bg-white border border-gray-300 rounded p-2 w-full"
+            className="bg-white border border-gray-300 rounded p-2 w-full "
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            style={{ color: 'black' }}
           />
         </div>
 
@@ -59,10 +60,11 @@ const Register = () => {
             id="email"
             name="email"
             placeholder="Enter your email address"
-            className="bg-white border border-gray-300 rounded p-2 w-full"
+            className="bg-white border border-gray-300 rounded p-2 w-full "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            style={{ color: 'black' }}
           />
         </div>
 
@@ -73,29 +75,31 @@ const Register = () => {
             type="password"
             id="password"
             placeholder="Enter a password"
-            className="bg-white border border-gray-300 rounded p-2 w-full"
+            className="bg-white border border-gray-300 rounded p-2 w-full "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ color: 'black' }}
           />
         </div>
 
-        <div className="flex mb-4 items-center">
+        <div className="flex items-center">
           <label htmlFor="confirmPassword" className="block text-left text-slate-700 mr-4" style={{ width: '150px' }}>Confirm Password</label>
           <p className="text-slate-700 mr-2">:</p>
           <input
             type="password"
             id="confirmPassword"
             placeholder="Confirm your password"
-            className={`bg-white border border-gray-300 rounded p-2 w-full ${password !== confirmPassword && 'border-red-500'}`}
+            className={`bg-white border border-gray-300 rounded p-2 w-full  ${password !== confirmPassword && 'border-red-500'}`}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            style={{ color: 'black' }}
           />
-          {password !== confirmPassword && (
-            <p className="text-xs text-red-500">The password does not match</p>
-          )}
         </div>
+        {password !== confirmPassword && (
+          <p className="text-xs text-red-500 text-left ml-40 mt-2 mb-4">The password does not match</p>
+        )}
 
         <div className="flex justify-center">
           <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 mr-5 rounded" type="submit">Register</button>
