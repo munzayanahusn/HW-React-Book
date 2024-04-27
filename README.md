@@ -24,7 +24,7 @@ Fitur utama dari situs web ini meliputi:
 
 ## Cara Menjalankan Program
 ### Back End
-1. Clone repository ini : `https://github.com/munzayanahusn/HW10-File-DesignPattern.git`
+1. Clone repository ini : `https://github.com/munzayanahusn/HW-React-Book.git`
 2. Buka terminal dan arahkan ke directory tempat clone
 3. Arahkan ke folder backend : `cd backend`
 4. Setup database masing-masing
@@ -42,7 +42,7 @@ Fitur utama dari situs web ini meliputi:
 > Ubah username, password, dan database_name pada `.env` sesuai setup database yang telah dibuat. Anda juga dapat mengubah mysecretkey menjadi JWT_SECRET yang Anda inginkan
 
 ### Front End
-1. Clone repository ini : `https://github.com/munzayanahusn/HW10-File-DesignPattern.git`
+1. Clone repository ini : `https://github.com/munzayanahusn/HW-React-Book.git`
 2. Buka terminal dan arahkan ke directory tempat clone
 3. Arahkan ke folder frontend : `cd frontend`
 4. Install dependencies dengan perintah : `npm install`
